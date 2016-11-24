@@ -13,8 +13,8 @@ import javax.persistence.Query;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mitdy.core.domain.AbstractEntity;
 import com.mitdy.core.value.CommonCriteria;
-import com.mitdy.domain.AbstractEntity;
 
 /**
  * 操作数据库的抽象接口的直接实现，使用JPA技术

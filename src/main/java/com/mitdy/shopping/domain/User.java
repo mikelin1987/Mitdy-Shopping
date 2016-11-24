@@ -6,7 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.mitdy.domain.AuditableEntity;
+import com.mitdy.core.domain.AuditableEntity;
 
 @Entity
 @Table(name = "DEMO_USER")

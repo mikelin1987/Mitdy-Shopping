@@ -3,8 +3,8 @@ package com.mitdy.core.persistence;
 import java.util.List;
 import java.util.Map;
 
+import com.mitdy.core.domain.AbstractEntity;
 import com.mitdy.core.value.CommonCriteria;
-import com.mitdy.domain.AbstractEntity;
 
 /**
  * 操作数据库的抽象接口
