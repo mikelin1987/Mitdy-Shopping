@@ -1,13 +1,8 @@
 package com.mitdy.shopping.persistence;
 
-import java.util.List;
-
+import com.mitdy.core.persistence.AbstractEntityDao;
 import com.mitdy.shopping.domain.User;
 
-public interface UserDao {
-    
-    public User save(User user);
+public interface UserDao extends AbstractEntityDao<User> {
 
-    public List<User> findAll();
-    
 }

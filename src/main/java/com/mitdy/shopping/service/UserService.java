@@ -6,10 +6,8 @@ import com.mitdy.shopping.domain.User;
 
 public interface UserService {
 
-    public User addUser(User user);
-    
-    public User addUser2(User user);
+    public User saveUser(User user);
 
-    public List<User> findAll();
+    public List<User> findAllUsers();
 
 }

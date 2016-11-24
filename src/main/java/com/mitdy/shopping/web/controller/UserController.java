@@ -20,7 +20,7 @@ public class UserController {
 
     @RequestMapping("/user-list")
     public String userList(Model model) {
-        List<User> users = userService.findAll();
+        List<User> users = userService.findAllUsers();
         System.out.println(users);
         model.addAttribute("users", users);
         return "user-list";
@@ -30,7 +30,7 @@ public class UserController {
     @ResponseBody
     public ResponseResult<List<User>> getUsers(Model model) throws InterruptedException {
         Thread.sleep(3000);
-        List<User> users = userService.findAll();
+        List<User> users = userService.findAllUsers();
         return new ResponseResult<List<User>>(users);
     }
 

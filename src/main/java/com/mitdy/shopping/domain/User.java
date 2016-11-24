@@ -4,32 +4,37 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
 import com.mitdy.core.domain.AuditableEntity;
+import com.mitdy.shopping.domain.enumuration.UserStatus;
 
 @Entity
-@Table(name = "DEMO_USER")
+@Table(name = "SECURITY_USER")
 public class User extends AuditableEntity {
 
-    private static final long serialVersionUID = 7725254424862008109L;
+    private static final long serialVersionUID = 9083601521746820850L;
 
-    @Column(name = "USERNAME", length = 20, unique = true, nullable = false)
+    @Column(name = "USERNAME", length = 50, nullable = false, unique = true)
     private String username;
 
     @Column(name = "NICKNAME", length = 20, nullable = true)
     private String nickname;
 
-    @Column(name = "PASSWORD", length = 20, nullable = false)
+    @Column(name = "PASSWORD", length = 100, nullable = false)
     private String password;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "STATUS", length = 20, nullable = false)
-    private String status;
+    private UserStatus status;
 
     public User() {
     }
 
-    public User(String username, String nickname, String password, Date createTime, String createUser, String status) {
+    public User(String username, String nickname, String password, UserStatus status, Date createTime,
+            String createUser) {
         this.username = username;
         this.nickname = nickname;
         this.password = password;
@@ -64,11 +69,11 @@ public class User extends AuditableEntity {
         this.password = password;
     }
 
-    public String getStatus() {
+    public UserStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(UserStatus status) {
         this.status = status;
     }
 

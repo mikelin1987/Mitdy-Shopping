@@ -18,22 +18,13 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Override
-    public User addUser(User user) {
+    public User saveUser(User user) {
         user = userDao.save(user);
-        return user;
-    }
-    
-    @Override
-    public User addUser2(User user) {
-        user = userDao.save(user);
-        if (true) {
-            throw new RuntimeException("Just runtime exception.");
-        }
         return user;
     }
 
     @Override
-    public List<User> findAll() {
+    public List<User> findAllUsers() {
         return userDao.findAll();
     }
 
