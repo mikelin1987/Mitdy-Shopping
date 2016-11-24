@@ -1,4 +1,4 @@
-package cn.springmvc.test;
+package com.mitdy.shopping.test;
 
 import java.util.Date;
 import java.util.List;
