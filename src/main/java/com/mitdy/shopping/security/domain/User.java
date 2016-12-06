@@ -77,4 +77,10 @@ public class User extends AuditableEntity {
         this.status = status;
     }
 
+    @Override
+    public String toString() {
+        return "User [username=" + username + ", nickname=" + nickname + ", password=" + password + ", status=" + status
+                + "]";
+    }
+
 }
