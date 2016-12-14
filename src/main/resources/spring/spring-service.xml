@@ -2,8 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:task="http://www.springframework.org/schema/task"
-	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:cache="http://www.springframework.org/schema/cache"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context 
@@ -18,6 +17,7 @@
        http://www.springframework.org/schema/cache/spring-cache-4.2.xsd">
 
 	<context:component-scan base-package="com.mitdy.**.service" />
+	<context:component-scan base-package="com.mitdy.**.jms" />
 	<context:annotation-config />
 	<cache:annotation-driven />
 
@@ -41,36 +41,71 @@
 		<property name="maxPoolSize" value="10" />
 		<property name="WaitForTasksToCompleteOnShutdown" value="true" />
 	</bean>
-	
-	 <!-- jedis 配置 -->
-    <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
-        <property name="maxIdle" value="${redis.maxIdle}" />
-        <property name="maxWaitMillis" value="${redis.maxWait}" />
-        <property name="testOnBorrow" value="${redis.testOnBorrow}" />
-    </bean>
+
+	<!-- jedis 配置 -->
+	<bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxIdle" value="${redis.maxIdle}" />
+		<property name="maxWaitMillis" value="${redis.maxWait}" />
+		<property name="testOnBorrow" value="${redis.testOnBorrow}" />
+	</bean>
 
 	<bean id="connectionFactory"
-        class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
-        <property name="poolConfig" ref="poolConfig" />
-        <property name="port" value="${redis.port}" />
-        <property name="hostName" value="${redis.host}" />
-        <property name="password" value="${redis.password}" />
-        <property name="timeout" value="${redis.timeout}"></property>
-    </bean>
-    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
-        <property name="connectionFactory" ref="connectionFactory" />
-        <property name="keySerializer">
-            <bean
-                class="org.springframework.data.redis.serializer.StringRedisSerializer" />
-        </property>
-        <property name="valueSerializer">
-            <bean
-                class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
-        </property>
-    </bean>
-    <!-- 配置缓存 -->
-    <bean id="cacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">
-        <constructor-arg ref="redisTemplate" />
-    </bean>
+		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+		<property name="poolConfig" ref="poolConfig" />
+		<property name="port" value="${redis.port}" />
+		<property name="hostName" value="${redis.host}" />
+		<property name="password" value="${redis.password}" />
+		<property name="timeout" value="${redis.timeout}"></property>
+	</bean>
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="keySerializer">
+			<bean
+				class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+		</property>
+		<property name="valueSerializer">
+			<bean
+				class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
+		</property>
+	</bean>
+	<!-- 配置缓存 -->
+	<bean id="cacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">
+		<constructor-arg ref="redisTemplate" />
+	</bean>
+
+	<!-- Activemq connection factory -->
+	<bean id="amqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<constructor-arg index="0" value="${jms.broker.url}" />
+		<property name="useAsyncSend" value="true" />
+	</bean>
+
+	<!-- ConnectionFactory Definition -->
+	<bean id="jmsConnectionFactory"
+		class="org.springframework.jms.connection.CachingConnectionFactory">
+		<constructor-arg ref="amqConnectionFactory" />
+	</bean>
+
+
+	<!-- Default Destination Queue Definition -->
+	<bean id="defaultDestination" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg index="0" value="${jms.queue.name}" />
+	</bean>
+
+	<!-- JmsTemplate Definition -->
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="jmsConnectionFactory" />
+		<property name="defaultDestination" ref="defaultDestination" />
+	</bean>
+
+	<!-- 自定义接受消息对象 -->
+	<!-- Message Receiver Definition -->
+	<bean id="messageReceiver" class="com.mitdy.core.jms.MessageReceiver">
+	</bean>
+	
+	<bean class="org.springframework.jms.listener.SimpleMessageListenerContainer">
+		<property name="connectionFactory" ref="jmsConnectionFactory" />
+		<property name="destinationName" value="${jms.queue.name}" />
+		<property name="messageListener" ref="messageReceiver" />
+	</bean>
 
 </beans>
