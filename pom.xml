@@ -241,7 +241,7 @@
 			<artifactId>activemq-all</artifactId>
 			<version>5.9.0</version>
 			<scope>compile</scope>
-		</dependency>
+		</dependency> 
 
 	</dependencies>
 	<build>
