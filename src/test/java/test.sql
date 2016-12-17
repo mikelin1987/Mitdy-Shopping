@@ -26,8 +26,8 @@ select count(*) from part_tab_2 where c3 > date '1995-01-01' and c3 < date '1997
 select count(*) from no_part_tab_2 where c3 > date '1995-01-01' and c3 < date '1997-12-31';
 
 
-select count(*) from part_tab_2 where c3 > date '1995-01-01' and c3 < date '1996-12-31' and c2='hello'; 
-select count(*) from no_part_tab_2 where c3 > date '1995-01-01' and c3 < date '1996-12-31' and c2='hello'; 
+select count(*) from part_tab_2 where c3 > date '1995-01-01' and c3 < date '1997-12-31' and c2 = 'hello'; 
+select count(*) from no_part_tab_2 where c3 > date '1995-01-01' and c3 < date '1997-12-31' and c2 = 'hello';
 
 
 #------------------------------------8000000--------------------------------------------
@@ -79,5 +79,5 @@ EXPLAIN select * from user2 where ID <= 1;
 
 
 
-LOAD DATA INFILE 'E:/bigdata_20161216_005309.txt' INTO TABLE USER CHARACTER SET utf8 FIELDS TERMINATED BY '#';
+LOAD DATA INFILE 'i:/bigdata_2.txt' INTO TABLE NO_PART_TAB CHARACTER SET utf8 FIELDS TERMINATED BY '#';
 
