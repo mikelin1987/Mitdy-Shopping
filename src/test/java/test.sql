@@ -7,7 +7,7 @@ CREATE TABLE user_thread_with_partition (
   user_id INT NOT NULL,
   subject VARCHAR(50) NOT NULL,
   content varchar(256) NOT NULL,
-  create_time datetime, NOT NULL,
+  create_time datetime NOT NULL,
   PRIMARY KEY (id, user_id)
 ) engine=innodb PARTITION BY HASH(user_id) PARTITIONS 101;
 
@@ -21,9 +21,9 @@ CREATE TABLE user_thread_no_partition (
   PRIMARY KEY (id, user_id)
 ) engine=innodb;
 
-LOAD DATA INFILE 'C:/bigdata.txt' INTO TABLE user_thread_with_partition CHARACTER SET utf8 FIELDS TERMINATED BY '#';
+LOAD DATA INFILE 'i:/bigdata.txt' INTO TABLE user_thread_with_partition CHARACTER SET utf8 FIELDS TERMINATED BY '#';
 
-LOAD DATA INFILE 'C:/bigdata.txt' INTO TABLE user_thread_no_partition CHARACTER SET utf8 FIELDS TERMINATED BY '#';
+LOAD DATA INFILE 'i:/bigdata.txt' INTO TABLE user_thread_no_partition CHARACTER SET utf8 FIELDS TERMINATED BY '#';
 
 
 explain partitions select count(*) from user_thread_no_partition;

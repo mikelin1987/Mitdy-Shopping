@@ -24,11 +24,11 @@ public class UserThreadDataWriter {
     }
 
     protected static void test1() throws FileNotFoundException, IOException {
-        int COUNT = 1000000;
+        int COUNT = 100000000;
 
         Date startTime = new Date();
         System.out.println(startTime);
-        String path = "C:/bigdata.txt";
+        String path = "I:/bigdata.txt";
         BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(path));
 
         Calendar calendar = GregorianCalendar.getInstance();

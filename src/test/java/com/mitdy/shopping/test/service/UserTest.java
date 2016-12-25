@@ -30,7 +30,7 @@ public class UserTest extends BaseTest {
 
     @Test
     public void addLargeDataTest() {
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < 100; i++) {
             UserStatus status = UserStatus.ACTIVE;
             if (i % 3 == 0) {
                 status = UserStatus.ACTIVE;
@@ -54,7 +54,7 @@ public class UserTest extends BaseTest {
 
     @Test
     public void findUserByUsernameTest1() {
-        User user = userService.findUserByUsername("user002");
+        User user = userService.findUserByUsernameNotUseCache("user002");
         user.setNickname("u002");
         user = userService.saveUser(user);
         System.out.println(user);
@@ -66,7 +66,7 @@ public class UserTest extends BaseTest {
         System.out.println("time1: " + SIMPLE_DATE_FORMAT.format(time1));
         
         for (int i = 0; i < 100; i++) {
-            User user = userService.findUserByUsername("user002");
+            User user = userService.findUserByUsername("user2");
             System.out.println(i + ", " + user);
         }
         
