@@ -8,7 +8,7 @@ import com.mitdy.shopping.test.base.BaseTest;
 
 public class ActiveMQTest extends BaseTest {
 
-    @Autowired
+    @Autowired(required = false)
     private MessageSender messageSender;
 
     @Test

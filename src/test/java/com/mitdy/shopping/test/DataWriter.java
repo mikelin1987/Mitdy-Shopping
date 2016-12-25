@@ -26,16 +26,17 @@ public class DataWriter {
     }
 
     protected static void test1() throws FileNotFoundException, IOException {
-        int COUNT = 10000000;
+        int COUNT = 500000000;
 
         Date startTime = new Date();
         System.out.println(startTime);
-        BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream("E:/bigdata_1.txt"));
+        String timeString = "2016-12-24 00:50:00";
+        BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream("C:/bigdata_1.txt"));
 
         for (int i = 1; i <= COUNT; i++) {
             StringBuffer buffer = new StringBuffer();
-            buffer.append(i).append(TERMINATOR).append("2016-12-16 00:50:00").append(TERMINATOR).append("system")
-                    .append(TERMINATOR).append("2016-12-16 00:50:00").append(TERMINATOR).append("system")
+            buffer.append(i).append(TERMINATOR).append(timeString).append(TERMINATOR).append("system")
+                    .append(TERMINATOR).append(timeString).append(TERMINATOR).append("system")
                     .append("\r\n");
             outputStream.write(buffer.toString().getBytes());
         }
@@ -51,25 +52,28 @@ public class DataWriter {
     }
 
     protected static void test2() throws FileNotFoundException, IOException {
-        int COUNT = 100000000;
+        int COUNT = 100000;
 
         Date startTime = new Date();
         System.out.println(startTime);
-        String path = "E:/bigdata_2.txt";
+        String path = "C:/bigdata_3.txt";
         BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(path));
 
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.set(1995, 0, 1);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Random random = new Random();
+        
+        String c2Value = "hello, mysql";
+        String newLine = "\r\n";
 
         for (int i = 1; i <= COUNT; i++) {
             StringBuffer buffer = new StringBuffer();
             int nextInt = random.nextInt(365 * 10);
             String dateText = format.format(DateUtils.addDays(calendar.getTime(), nextInt));
 
-            buffer.append(i).append(TERMINATOR).append("hello, mysql").append(TERMINATOR).append(dateText)
-                    .append("\r\n");
+            buffer.append(i).append(TERMINATOR).append(c2Value).append(TERMINATOR).append(dateText)
+                    .append(newLine);
             outputStream.write(buffer.toString().getBytes());
         }
 

@@ -1,4 +1,79 @@
 
+
+
+
+CREATE TABLE user_thread_with_partition (
+  id INT AUTO_INCREMENT NOT NULL,
+  user_id INT NOT NULL,
+  subject VARCHAR(50) NOT NULL,
+  content varchar(256) NOT NULL,
+  create_time datetime, NOT NULL,
+  PRIMARY KEY (id, user_id)
+) engine=innodb PARTITION BY HASH(user_id) PARTITIONS 101;
+
+
+CREATE TABLE user_thread_no_partition (
+  id INT AUTO_INCREMENT NOT NULL,
+  user_id INT NOT NULL,
+  subject VARCHAR(50) NOT NULL,
+  content varchar(256) NOT NULL,
+  create_time datetime NOT NULL,
+  PRIMARY KEY (id, user_id)
+) engine=innodb;
+
+LOAD DATA INFILE 'C:/bigdata.txt' INTO TABLE user_thread_with_partition CHARACTER SET utf8 FIELDS TERMINATED BY '#';
+
+LOAD DATA INFILE 'C:/bigdata.txt' INTO TABLE user_thread_no_partition CHARACTER SET utf8 FIELDS TERMINATED BY '#';
+
+
+explain partitions select count(*) from user_thread_no_partition;
+explain partitions select count(*) from user_thread_with_partition;
+
+
+select count(*) from user_thread_no_partition;
+select count(*) from user_thread_with_partition;
+
+explain partitions select count(*) from user_thread_no_partition where user_id = 35;
+explain partitions select count(*) from user_thread_with_partition where user_id = 35;
+
+
+select count(*) from user_thread_no_partition where user_id = 35;
+select count(*) from user_thread_with_partition where user_id = 35;
+
+
+explain partitions select count(*) from user_thread_no_partition where user_id = 88 and create_time >= '2016-03-01 00:00:00' and create_time <= '2016-03-31 23:59:59';
+explain partitions select count(*) from user_thread_with_partition where user_id = 88 and create_time >= '2016-03-01 00:00:00' and create_time <= '2016-03-31 23:59:59';
+
+
+select count(*) from user_thread_no_partition where user_id = 2 and create_time >= '2016-03-01 00:00:00' and create_time <= '2016-03-31 23:59:59';
+select count(*) from user_thread_with_partition where user_id = 1 and create_time >= '2016-03-01 00:00:00' and create_time <= '2016-03-31 23:59:59';
+
+
+
+
+
+#------------------------------------100000000--------------------------------------------
+
+
+CREATE TABLE part_tab_2 ( c1 int default NULL, c2 varchar(30) default NULL, c3 date default NULL) engine=innodb   
+PARTITION BY RANGE (year(c3)) (PARTITION p0 VALUES LESS THAN (1995),  
+PARTITION p1 VALUES LESS THAN (1996) , PARTITION p2 VALUES LESS THAN (1997) ,  
+PARTITION p3 VALUES LESS THAN (1998) , PARTITION p4 VALUES LESS THAN (1999) ,  
+PARTITION p5 VALUES LESS THAN (2000) , PARTITION p6 VALUES LESS THAN (2001) ,  
+PARTITION p7 VALUES LESS THAN (2002) , PARTITION p8 VALUES LESS THAN (2003) ,  
+PARTITION p9 VALUES LESS THAN (2004) , PARTITION p10 VALUES LESS THAN (2005),  
+PARTITION p11 VALUES LESS THAN MAXVALUE);
+
+create table no_part_tab_2 (c1 int(11) default NULL,c2 varchar(30) default NULL,c3 date default NULL) engine=innodb;
+
+
+
+
+
+
+
+
+
 #------------------------------------100000000--------------------------------------------
 
 
@@ -79,5 +154,5 @@ EXPLAIN select * from user2 where ID <= 1;
 
 
 
-LOAD DATA INFILE 'i:/bigdata_2.txt' INTO TABLE NO_PART_TAB CHARACTER SET utf8 FIELDS TERMINATED BY '#';
+LOAD DATA INFILE 'C:/bigdata_2.txt' INTO TABLE NO_PART_TAB_2 CHARACTER SET utf8 FIELDS TERMINATED BY '#';
 

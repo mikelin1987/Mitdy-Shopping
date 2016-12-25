@@ -17,7 +17,7 @@ public class MessageSender {
     
     public static Logger logger = LoggerFactory.getLogger(MessageSender.class);
 
-    @Autowired
+    @Autowired(required = false)
     private JmsTemplate jmsTemplate;
     
     public void sendSimpleMessage(String messageText) {
