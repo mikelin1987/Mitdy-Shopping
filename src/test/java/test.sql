@@ -1,7 +1,16 @@
 
 
 
+grant replication slave,reload,super on *.* to parkoroot@'192.168.1.254' indentified by 'root';
 
+show master status;
+
+CHANGE MASTER TO MASTER_HOST='192.168.1.46', MASTER_USER='parkoroot', MASTER_PASSWORD='root', MASTER_LOG_FILE='log-bin.000002', MASTER_LOG_POS=106;
+
+mysql -h 192.168.1.46 -P 3306 -uroot -p
+mysql -h 192.168.1.46 -P 3306 -uparkoroot -p
+
+-----------------------------------------------------------------------------
 CREATE TABLE user_thread_with_partition (
   id INT AUTO_INCREMENT NOT NULL,
   user_id INT NOT NULL,
