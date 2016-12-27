@@ -1,11 +1,26 @@
 
+-- Master
+server-id=100
+log-bin = G:/logbin/log-bin.log
+binlog-do-db=easystock20150103
 
 
-grant replication slave,reload,super on *.* to parkoroot@'192.168.1.254' indentified by 'root';
+grant replication slave,reload,super on *.* to parkoroot@'192.168.0.7' identified by 'root';
 
 show master status;
 
-CHANGE MASTER TO MASTER_HOST='192.168.1.46', MASTER_USER='parkoroot', MASTER_PASSWORD='root', MASTER_LOG_FILE='log-bin.000002', MASTER_LOG_POS=106;
+-- Slave
+server-id=200
+log-bin=mysql-bin
+relay-log=relay-bin
+relay-log-index=relay-bin-index
+
+
+stop slave;
+CHANGE MASTER TO MASTER_HOST='192.168.0.15', MASTER_USER='parkoroot', MASTER_PASSWORD='root', MASTER_LOG_FILE='log-bin.000001', MASTER_LOG_POS=107;
+start slave;
+show slave status;
+
 
 mysql -h 192.168.1.46 -P 3306 -uroot -p
 mysql -h 192.168.1.46 -P 3306 -uparkoroot -p
