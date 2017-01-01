@@ -29,7 +29,6 @@ public class GoodsPricingDataWriter extends AbstractWriter {
 
 			int n = 5 + random.nextInt(5);
 			BigDecimal discount = new BigDecimal(n / 10.0d);
-			
 			BigDecimal price = new BigDecimal(random.nextInt(1000) + random.nextDouble());
 
 			buffer.append(i).append(TERMINATOR);

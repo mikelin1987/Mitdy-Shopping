@@ -7,7 +7,12 @@ public class DataWriterMain {
 		
 //		new GoodsDataWriter().run();
 		
-		new GoodsPricingDataWriter().run();
+//		new GoodsPricingDataWriter().run();
+		
+//		new SalesOrderDataWriter().run();
+		
+		new SalesOrderItemDataWriter().run();
+		
 		
 	}
 
