@@ -1,4 +1,13 @@
 
+LOAD DATA INFILE 'H:/member_data.txt' INTO TABLE member_member CHARACTER SET utf8 FIELDS TERMINATED BY '#';
+LOAD DATA INFILE 'H:/goods_data.txt' INTO TABLE goods_goods CHARACTER SET utf8 FIELDS TERMINATED BY '#';
+LOAD DATA INFILE 'H:/goods_pricing_data.txt' INTO TABLE sales_goods_pricing CHARACTER SET utf8 FIELDS TERMINATED BY '#';
+LOAD DATA INFILE 'H:/sales_order_data.txt' INTO TABLE sales_sales_order CHARACTER SET utf8 FIELDS TERMINATED BY '#';
+LOAD DATA INFILE 'H:/sales_order_item_data.txt' INTO TABLE sales_sales_order_item CHARACTER SET utf8 FIELDS TERMINATED BY '#';
+
+
+
+
 -- Master
 server-id=100
 log-bin = G:/logbin/log-bin.log
