@@ -21,11 +21,12 @@ import com.mitdy.shopping.sales.dto.CreateActivityOrderDTO;
 import com.mitdy.shopping.sales.persistence.SalesActivityItemDao;
 import com.mitdy.shopping.sales.persistence.SalesOrderDao;
 import com.mitdy.shopping.sales.persistence.SalesOrderItemDao;
-import com.mitdy.shopping.sales.service.OrderService;
+import com.mitdy.shopping.sales.service.SalesActivityService;
+import com.mitdy.shopping.sales.service.SalesOrderService;
 
 @Transactional
-@Service("orderService")
-public class OrderServiceImpl implements OrderService {
+@Service("salesOrderService")
+public class SalesOrderServiceImpl implements SalesOrderService {
 
 	@Autowired
 	private SalesOrderDao salesOrderDao;
@@ -38,6 +39,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private SalesOrderItemDao salesOrderItemDao;
+	
+	@Autowired
+	private SalesActivityService salesActivityService;
 
 	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 	
@@ -48,7 +52,7 @@ public class OrderServiceImpl implements OrderService {
 			throw new IllegalArgumentException("Could not find the member with id'" + orderDTO.getMemberId() + "'");
 		}
 
-		SalesActivityItem salesActivityItem = salesActivityItemDao.findById(orderDTO.getActivityItemId());
+		SalesActivityItem salesActivityItem = salesActivityService.findSalesActivityItemById(orderDTO.getActivityItemId());
 		if (salesActivityItem == null) {
 			throw new IllegalArgumentException(
 					"Could not find the salesActivityItem with id'" + orderDTO.getActivityItemId() + "'");
@@ -71,9 +75,13 @@ public class OrderServiceImpl implements OrderService {
 			throw new IllegalArgumentException("Invalid quantity of '" + orderDTO.getQuantity() + "'");
 		}
 
-		salesActivityItem.setSellCount(salesActivityItem.getSellCount() - orderDTO.getQuantity());
+		System.out.println(Thread.currentThread().getId() + ", " + Thread.currentThread().getName());
+		System.out.println("before : " + salesActivityItem + ", " + salesActivityItem.getSellCount());
+		salesActivityItem.setSellCount(salesActivityItem.getSellCount() + orderDTO.getQuantity());
+		
 		Auditer.audit(salesActivityItem, null);
-		salesActivityItemDao.save(salesActivityItem);
+		salesActivityItem = salesActivityService.saveSalesActivityItem(salesActivityItem);
+		System.out.println("after: " + salesActivityItem + ", " + salesActivityItem.getSellCount());
 		
 		GoodsPricing goodsPricing = salesActivityItem.getGoodsPricing();
 		
@@ -84,6 +92,7 @@ public class OrderServiceImpl implements OrderService {
 		salesOrder.setPaymentType(orderDTO.getPaymentType());
 		salesOrder.setDeliverAmount(new BigDecimal(0));
 		salesOrder.setOrderAmount(goodsPricing.getUnitPrice().multiply(salesActivityItem.getDiscountPercentage()).multiply(new BigDecimal(orderDTO.getQuantity())).setScale(2, RoundingMode.HALF_UP));
+		salesOrder.setDiscountAmount(new BigDecimal(0.0));
 		salesOrder.setActualAmount(salesOrder.getOrderAmount().add(salesOrder.getDeliverAmount()).setScale(2, RoundingMode.HALF_UP));
 		salesOrder.setSubmitTime(new Date());
 		Auditer.audit(salesOrder, null);
@@ -103,8 +112,6 @@ public class OrderServiceImpl implements OrderService {
 		Auditer.audit(orderItem, null);
 		
 		salesOrderItemDao.save(orderItem);
-		
-		
 	}
 
 }

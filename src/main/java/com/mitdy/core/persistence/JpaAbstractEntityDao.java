@@ -48,7 +48,9 @@ public class JpaAbstractEntityDao<T extends AbstractEntity> implements AbstractE
 
     @Override
     public T save(T entity) {
-        return em.merge(entity);
+        entity =  em.merge(entity);
+        em.flush();
+        return entity;
     }
 
     @Override

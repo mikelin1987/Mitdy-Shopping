@@ -60,7 +60,7 @@ public class SalesOrder extends AuditableEntity {
 	}
 
 	public SalesOrder(String orderNo, Long memberId) {
-		super();
+		this();
 		this.orderNo = orderNo;
 		this.memberId = memberId;
 	}
