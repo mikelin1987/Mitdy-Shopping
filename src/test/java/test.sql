@@ -8,6 +8,9 @@ LOAD DATA INFILE 'H:/sales_order_item_data.txt' INTO TABLE sales_sales_order_ite
 
 
 
+
+
+
 -- Master
 server-id=100
 log-bin = G:/logbin/log-bin.log
