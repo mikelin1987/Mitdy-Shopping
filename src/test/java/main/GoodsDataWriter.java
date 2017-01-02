@@ -11,7 +11,7 @@ public class GoodsDataWriter extends AbstractWriter {
 
 		Date startTime = new Date();
 		System.out.println(startTime);
-		String path = "H:/goods_data.txt";
+		String path = "F:/goods_data.txt";
 		BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(path));
 
 		String createUser = "SYSTEM";

@@ -40,7 +40,7 @@ SUBMIT_TIME
 
 		Date startTime = new Date();
 		System.out.println(startTime);
-		String path = "H:/sales_order_data.txt";
+		String path = "F:/sales_order_data.txt";
 		BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(path));
 
 		String createUser = "SYSTEM";

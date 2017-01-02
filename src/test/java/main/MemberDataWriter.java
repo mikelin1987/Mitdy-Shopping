@@ -17,7 +17,7 @@ public class MemberDataWriter extends AbstractWriter {
 		
 		Date startTime = new Date();
         System.out.println(startTime);
-        String path = "H:/member_data.txt";
+        String path = "F:/member_data.txt";
         BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(path));
 
         Calendar calendar = GregorianCalendar.getInstance();
