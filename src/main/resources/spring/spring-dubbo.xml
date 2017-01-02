@@ -10,22 +10,22 @@
 
 	<!-- <context:component-scan base-package="com.mitdy.**.web.dubbo" /> -->
 
-	<bean id="userServiceApi"
+	<!-- <bean id="userServiceApi"
 		class="com.mitdy.shopping.security.web.dubbo.UserServiceApiImpl">
 		<property name="userService" ref="userService" />
 	</bean>
 
-	<!-- 提供方应用信息，用于计算依赖关系 -->
+	提供方应用信息，用于计算依赖关系
 	<dubbo:application name="mitdy-shopping" />
-	<!-- 使用multicast广播注册中心暴露服务地址 <dubbo:registry address="multicast://localhost:1234" 
-		/> -->
-	<!-- 使用zookeeper注册中心暴露服务地址 -->
+	使用multicast广播注册中心暴露服务地址 <dubbo:registry address="multicast://localhost:1234" 
+		/>
+	使用zookeeper注册中心暴露服务地址
 	<dubbo:registry address="${dubbo.registry}" />
-	<!-- 用dubbo协议在20880端口暴露服务 -->
+	用dubbo协议在20880端口暴露服务
 	<dubbo:protocol name="dubbo" port="${dubbo.port}" />
-	<!-- 声明需要暴露的服务接口 -->
+	声明需要暴露的服务接口
 	<dubbo:service interface="com.mitdy.shopping.security.web.dubbo.UserServiceApi"
 		ref="userServiceApi" version="${dubbo.version}" />
-
+ -->
 
 </beans>
