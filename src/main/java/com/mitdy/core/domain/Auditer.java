@@ -17,7 +17,7 @@ public class Auditer {
 	public static void onCreate(AuditableEntity auditable, Principal principal) {
 		if (auditable.getId() == null) {
 			if (auditable.getCreateUser() == null) {
-				auditable.setCreateUser(principal != null ? principal.getUserId() : SYSTEM_RESERVED_USER_ID);
+				auditable.setCreateUser(principal != null ? principal.getUsername() : SYSTEM_RESERVED_USER_ID);
 			}
 			auditable.setCreateTime(new Date());
 		}
@@ -33,7 +33,7 @@ public class Auditer {
 	}
 
 	public static void onUpdate(AuditableEntity auditable, Principal principal) {
-		auditable.setLastUpdateUser(principal != null ? principal.getUserId() : SYSTEM_RESERVED_USER_ID);
+		auditable.setLastUpdateUser(principal != null ? principal.getUsername() : SYSTEM_RESERVED_USER_ID);
 		auditable.setLastUpdateTime(new Date());
 	}
 
@@ -45,18 +45,9 @@ public class Auditer {
 	public static Principal getSystemUser() {
 		return new Principal() {
 
-			@Override
-			public boolean isAdmin() {
-				return true;
-			}
 
 			@Override
-			public String getUserName() {
-				return SYSTEM_RESERVED_USER_ID;
-			}
-
-			@Override
-			public String getUserId() {
+			public String getUsername() {
 				return SYSTEM_RESERVED_USER_ID;
 			}
 
@@ -66,8 +57,8 @@ public class Auditer {
 			}
 
 			@Override
-			public Date getLastLoginTime() {
-				return null;
+			public boolean isAdminUser() {
+				return true;
 			}
 		};
 	}

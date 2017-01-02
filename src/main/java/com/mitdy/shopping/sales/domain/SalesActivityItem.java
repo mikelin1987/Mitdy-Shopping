@@ -61,6 +61,10 @@ public class SalesActivityItem extends AuditableEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "ACTIVITY_STATUS", length = 20, nullable = false)
     private SalesActivityStatus activityStatus;
+    
+    public boolean isSellOut() {
+    	return (sellCount >= secondsKillCount);
+    }
 
     public SalesActivity getActivity() {
         return activity;

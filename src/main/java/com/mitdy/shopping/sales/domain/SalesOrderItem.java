@@ -15,107 +15,114 @@ import com.mitdy.core.domain.AuditableEntity;
 @Table(name = "SALES_SALES_ORDER_ITEM")
 public class SalesOrderItem extends AuditableEntity {
 
-    private static final long serialVersionUID = 2987707526012176467L;
+	private static final long serialVersionUID = 2987707526012176467L;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "ORDER_ID", nullable = false)
-    private SalesOrder order;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "ORDER_ID", nullable = false)
+	private SalesOrder order;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "SALES_ACTIVITY_ITEM_ID")
-    private SalesActivityItem salesActivityItem;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "SALES_ACTIVITY_ITEM_ID")
+	private SalesActivityItem salesActivityItem;
 
-    @Column(name = "GOODS_ID", nullable = false)
-    private Long goodsId;
+	@Column(name = "GOODS_ID", nullable = false)
+	private Long goodsId;
 
-    @Column(name = "GOODS_NAME", length = 100, nullable = false)
-    private String goodsName;
+	@Column(name = "GOODS_NAME", length = 100, nullable = false)
+	private String goodsName;
 
-    @Column(name = "GOODS_DESC", length = 256, nullable = false)
-    private String goodsDesc;
+	@Column(name = "GOODS_DESC", length = 256, nullable = false)
+	private String goodsDesc;
 
-    @Column(name = "UNIT_PRICE", precision = 10, scale = 2, length = 100, nullable = false)
-    private BigDecimal unitPrice;
+	@Column(name = "UNIT_PRICE", precision = 10, scale = 2, length = 100, nullable = false)
+	private BigDecimal unitPrice;
 
-    @Column(name = "ACTUAL_UNIT_PRICE", precision = 10, scale = 2, length = 100, nullable = false)
-    private BigDecimal actualUnitPrice;
+	@Column(name = "ACTUAL_UNIT_PRICE", precision = 10, scale = 2, length = 100, nullable = false)
+	private BigDecimal actualUnitPrice;
 
-    @Column(name = "QUANTITY", precision = 10, scale = 2, length = 100, nullable = false)
-    private BigDecimal quantity;
+	@Column(name = "QUANTITY", precision = 10, scale = 2, length = 100, nullable = false)
+	private BigDecimal quantity;
 
-    @Column(name = "TOTAL_AMOUNT", precision = 10, scale = 2, length = 100, nullable = false)
-    private BigDecimal totalAmount;
+	@Column(name = "TOTAL_AMOUNT", precision = 10, scale = 2, length = 100, nullable = false)
+	private BigDecimal totalAmount;
 
-    public SalesOrder getOrder() {
-        return order;
-    }
+	public SalesOrderItem() {
+	}
 
-    public void setOrder(SalesOrder order) {
-        this.order = order;
-    }
+	public SalesOrderItem(SalesOrder order) {
+		this.order = order;
+	}
 
-    public SalesActivityItem getSalesActivityItem() {
-        return salesActivityItem;
-    }
+	public SalesOrder getOrder() {
+		return order;
+	}
 
-    public void setSalesActivityItem(SalesActivityItem salesActivityItem) {
-        this.salesActivityItem = salesActivityItem;
-    }
+	public void setOrder(SalesOrder order) {
+		this.order = order;
+	}
 
-    public BigDecimal getQuantity() {
-        return quantity;
-    }
+	public SalesActivityItem getSalesActivityItem() {
+		return salesActivityItem;
+	}
 
-    public void setQuantity(BigDecimal quantity) {
-        this.quantity = quantity;
-    }
+	public void setSalesActivityItem(SalesActivityItem salesActivityItem) {
+		this.salesActivityItem = salesActivityItem;
+	}
 
-    public Long getGoodsId() {
-        return goodsId;
-    }
+	public BigDecimal getQuantity() {
+		return quantity;
+	}
 
-    public void setGoodsId(Long goodsId) {
-        this.goodsId = goodsId;
-    }
+	public void setQuantity(BigDecimal quantity) {
+		this.quantity = quantity;
+	}
 
-    public String getGoodsName() {
-        return goodsName;
-    }
+	public Long getGoodsId() {
+		return goodsId;
+	}
 
-    public void setGoodsName(String goodsName) {
-        this.goodsName = goodsName;
-    }
+	public void setGoodsId(Long goodsId) {
+		this.goodsId = goodsId;
+	}
 
-    public String getGoodsDesc() {
-        return goodsDesc;
-    }
+	public String getGoodsName() {
+		return goodsName;
+	}
 
-    public void setGoodsDesc(String goodsDesc) {
-        this.goodsDesc = goodsDesc;
-    }
+	public void setGoodsName(String goodsName) {
+		this.goodsName = goodsName;
+	}
 
-    public BigDecimal getUnitPrice() {
-        return unitPrice;
-    }
+	public String getGoodsDesc() {
+		return goodsDesc;
+	}
 
-    public void setUnitPrice(BigDecimal unitPrice) {
-        this.unitPrice = unitPrice;
-    }
+	public void setGoodsDesc(String goodsDesc) {
+		this.goodsDesc = goodsDesc;
+	}
 
-    public BigDecimal getActualUnitPrice() {
-        return actualUnitPrice;
-    }
+	public BigDecimal getUnitPrice() {
+		return unitPrice;
+	}
 
-    public void setActualUnitPrice(BigDecimal actualUnitPrice) {
-        this.actualUnitPrice = actualUnitPrice;
-    }
+	public void setUnitPrice(BigDecimal unitPrice) {
+		this.unitPrice = unitPrice;
+	}
 
-    public BigDecimal getTotalAmount() {
-        return totalAmount;
-    }
+	public BigDecimal getActualUnitPrice() {
+		return actualUnitPrice;
+	}
 
-    public void setTotalAmount(BigDecimal totalAmount) {
-        this.totalAmount = totalAmount;
-    }
+	public void setActualUnitPrice(BigDecimal actualUnitPrice) {
+		this.actualUnitPrice = actualUnitPrice;
+	}
+
+	public BigDecimal getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(BigDecimal totalAmount) {
+		this.totalAmount = totalAmount;
+	}
 
 }

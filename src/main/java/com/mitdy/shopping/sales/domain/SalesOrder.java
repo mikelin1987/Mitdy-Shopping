@@ -18,129 +18,144 @@ import com.mitdy.shopping.sales.enumeration.SalesOrderStatus;
 @Table(name = "SALES_SALES_ORDER")
 public class SalesOrder extends AuditableEntity {
 
-    private static final long serialVersionUID = 6851163021563464098L;
+	private static final long serialVersionUID = 6851163021563464098L;
 
-    @Column(name = "ORDER_NO", length = 100, nullable = false)
-    private String orderNo;
+	@Column(name = "ORDER_NO", length = 100, nullable = false)
+	private String orderNo;
 
-    @Column(name = "MEMBER_ID", nullable = false)
-    private Long memberId;
+	@Column(name = "MEMBER_ID", nullable = false)
+	private Long memberId;
 
-    @Column(name = "PAYER_NAME", length = 20, nullable = false)
-    private String payerName;
+	@Column(name = "PAYER_NAME", length = 20, nullable = false)
+	private String payerName;
 
-    @Column(name = "CONTACT_NO", length = 20, nullable = true)
-    private String contactNo;
+	@Column(name = "CONTACT_NO", length = 20, nullable = true)
+	private String contactNo;
 
-    @Column(name = "PAYMENT_TYPE", length = 50, nullable = true)
-    private String paymentType;
+	@Column(name = "PAYMENT_TYPE", length = 50, nullable = true)
+	private String paymentType;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "ORDER_STATUS", length = 20, nullable = false)
-    private SalesOrderStatus orderStatus;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "ORDER_STATUS", length = 20, nullable = false)
+	private SalesOrderStatus orderStatus;
 
-    @Column(name = "ORDER_AMOUNT", precision = 10, scale = 2, length = 100, nullable = false)
-    private BigDecimal orderAmount;
+	@Column(name = "ORDER_AMOUNT", precision = 10, scale = 2, length = 100, nullable = false)
+	private BigDecimal orderAmount;
 
-    @Column(name = "DELIVER_AMOUNT", precision = 10, scale = 2, length = 100, nullable = false)
-    private BigDecimal deliverAmount;
+	@Column(name = "DELIVER_AMOUNT", precision = 10, scale = 2, length = 100, nullable = false)
+	private BigDecimal deliverAmount;
 
-    @Column(name = "DISCOUNT_AMOUNT", precision = 10, scale = 2, length = 100, nullable = false)
-    private BigDecimal discountAmount;
+	@Column(name = "DISCOUNT_AMOUNT", precision = 10, scale = 2, length = 100, nullable = false)
+	private BigDecimal discountAmount;
 
-    @Column(name = "ACTUAL_AMOUNT", precision = 10, scale = 2, length = 100, nullable = false)
-    private BigDecimal actualAmount;
+	@Column(name = "ACTUAL_AMOUNT", precision = 10, scale = 2, length = 100, nullable = false)
+	private BigDecimal actualAmount;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "SUBMIT_TIME", nullable = false)
-    private Date submitTime;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "SUBMIT_TIME", nullable = false)
+	private Date submitTime;
 
-    public String getOrderNo() {
-        return orderNo;
-    }
+	public SalesOrder() {
+		this.orderStatus = SalesOrderStatus.PENDING;
+	}
 
-    public void setOrderNo(String orderNo) {
-        this.orderNo = orderNo;
-    }
+	public SalesOrder(String orderNo, Long memberId) {
+		super();
+		this.orderNo = orderNo;
+		this.memberId = memberId;
+	}
 
-    public Long getMemberId() {
-        return memberId;
-    }
+	public SalesOrder(String createUser) {
+		super(createUser);
+		// TODO Auto-generated constructor stub
+	}
 
-    public void setMemberId(Long memberId) {
-        this.memberId = memberId;
-    }
+	public String getOrderNo() {
+		return orderNo;
+	}
 
-    public String getPayerName() {
-        return payerName;
-    }
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
+	}
 
-    public void setPayerName(String payerName) {
-        this.payerName = payerName;
-    }
+	public Long getMemberId() {
+		return memberId;
+	}
 
-    public String getContactNo() {
-        return contactNo;
-    }
+	public void setMemberId(Long memberId) {
+		this.memberId = memberId;
+	}
 
-    public void setContactNo(String contactNo) {
-        this.contactNo = contactNo;
-    }
+	public String getPayerName() {
+		return payerName;
+	}
 
-    public String getPaymentType() {
-        return paymentType;
-    }
+	public void setPayerName(String payerName) {
+		this.payerName = payerName;
+	}
 
-    public void setPaymentType(String paymentType) {
-        this.paymentType = paymentType;
-    }
+	public String getContactNo() {
+		return contactNo;
+	}
 
-    public SalesOrderStatus getOrderStatus() {
-        return orderStatus;
-    }
+	public void setContactNo(String contactNo) {
+		this.contactNo = contactNo;
+	}
 
-    public void setOrderStatus(SalesOrderStatus orderStatus) {
-        this.orderStatus = orderStatus;
-    }
+	public String getPaymentType() {
+		return paymentType;
+	}
 
-    public BigDecimal getOrderAmount() {
-        return orderAmount;
-    }
+	public void setPaymentType(String paymentType) {
+		this.paymentType = paymentType;
+	}
 
-    public void setOrderAmount(BigDecimal orderAmount) {
-        this.orderAmount = orderAmount;
-    }
+	public SalesOrderStatus getOrderStatus() {
+		return orderStatus;
+	}
 
-    public BigDecimal getDeliverAmount() {
-        return deliverAmount;
-    }
+	public void setOrderStatus(SalesOrderStatus orderStatus) {
+		this.orderStatus = orderStatus;
+	}
 
-    public void setDeliverAmount(BigDecimal deliverAmount) {
-        this.deliverAmount = deliverAmount;
-    }
+	public BigDecimal getOrderAmount() {
+		return orderAmount;
+	}
 
-    public BigDecimal getDiscountAmount() {
-        return discountAmount;
-    }
+	public void setOrderAmount(BigDecimal orderAmount) {
+		this.orderAmount = orderAmount;
+	}
 
-    public void setDiscountAmount(BigDecimal discountAmount) {
-        this.discountAmount = discountAmount;
-    }
+	public BigDecimal getDeliverAmount() {
+		return deliverAmount;
+	}
 
-    public BigDecimal getActualAmount() {
-        return actualAmount;
-    }
+	public void setDeliverAmount(BigDecimal deliverAmount) {
+		this.deliverAmount = deliverAmount;
+	}
 
-    public void setActualAmount(BigDecimal actualAmount) {
-        this.actualAmount = actualAmount;
-    }
+	public BigDecimal getDiscountAmount() {
+		return discountAmount;
+	}
 
-    public Date getSubmitTime() {
-        return submitTime;
-    }
+	public void setDiscountAmount(BigDecimal discountAmount) {
+		this.discountAmount = discountAmount;
+	}
 
-    public void setSubmitTime(Date submitTime) {
-        this.submitTime = submitTime;
-    }
+	public BigDecimal getActualAmount() {
+		return actualAmount;
+	}
+
+	public void setActualAmount(BigDecimal actualAmount) {
+		this.actualAmount = actualAmount;
+	}
+
+	public Date getSubmitTime() {
+		return submitTime;
+	}
+
+	public void setSubmitTime(Date submitTime) {
+		this.submitTime = submitTime;
+	}
 
 }
