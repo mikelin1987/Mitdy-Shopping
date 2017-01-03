@@ -30,5 +30,16 @@ public class SalesOrderServletController {
             throw e;
         }
     }
+    
+    @RequestMapping(method = RequestMethod.POST, value = "/createDummyActivityOrder")
+    @ResponseBody
+    public ResponseData<Boolean> createDummyActivityOrder(@RequestBody CreateActivityOrderDTO orderDTO) {
+        try {
+            return new ResponseData<Boolean>(true);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw e;
+        }
+    }
 
 }
