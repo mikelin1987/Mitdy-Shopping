@@ -26,4 +26,12 @@ public class SalesActivityServiceImpl implements SalesActivityService {
        return salesActivityItemDao.findById(itemId);
     }
 
+    @Override
+    public int increaseActivityItemSellCount(Long itemId, int count) {
+        return salesActivityItemDao.increaseSellCount(itemId, count);
+    }
+    
+    
+    
+
 }

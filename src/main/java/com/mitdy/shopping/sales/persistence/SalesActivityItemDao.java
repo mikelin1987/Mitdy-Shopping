@@ -5,4 +5,6 @@ import com.mitdy.shopping.sales.domain.SalesActivityItem;
 
 public interface SalesActivityItemDao extends AbstractEntityDao<SalesActivityItem> {
 
+    public int increaseSellCount(Long itemId, int count);
+    
 }

@@ -25,8 +25,9 @@ public class SalesOrderServletController {
             salesOrderService.createActivityOrder(orderDTO);
             return new ResponseData<Boolean>(true);
         } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseData<Boolean>("Exception", e.getMessage());
+            System.out.println(e.getMessage());
+//            return new ResponseData<Boolean>("Exception", e.getMessage());
+            throw e;
         }
     }
 

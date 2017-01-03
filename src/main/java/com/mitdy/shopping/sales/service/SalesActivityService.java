@@ -8,6 +8,6 @@ public interface SalesActivityService {
     
     public SalesActivityItem findSalesActivityItemById(Long itemId);
     
-    
+    public int increaseActivityItemSellCount(Long itemId, int count);
     
 }

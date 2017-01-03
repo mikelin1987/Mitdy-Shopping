@@ -21,4 +21,12 @@ public class SalesActivityItemDaoImpl extends JpaAbstractEntityDao<SalesActivity
         }
     }
 
+    @Override
+    public int increaseSellCount(Long itemId, int count) {
+        return em
+                .createQuery(
+                        "update SalesActivityItem e set e.sellCount = e.sellCount + :count where e.id = :itemId and e.sellCount + :count <= e.secondsKillCount")
+                .setParameter("itemId", itemId).setParameter("count", count).executeUpdate();
+    }
+
 }
