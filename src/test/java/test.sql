@@ -7,7 +7,23 @@ LOAD DATA INFILE 'F:/sales_order_item_data.txt' INTO TABLE sales_sales_order_ite
 
 
 
+delete from sales_sales_order_item where CREATE_TIME BETWEEN '2017-01-02 00:00:00' and '2017-01-06 00:00:00';
+delete from sales_sales_order where CREATE_TIME BETWEEN '2017-01-02 00:00:00' and '2017-01-06 00:00:00';
+update sales_sales_activity_item set SELL_COUNT = 0 where id = 1;
 
+select * from sales_sales_order where CREATE_TIME BETWEEN '2017-01-02 00:00:00' and '2017-01-06 00:00:00' order by id desc limit 0, 120;
+select * from sales_sales_order_item where CREATE_TIME BETWEEN '2017-01-02 00:00:00' and '2017-01-06 00:00:00' order by id desc limit 0, 120;
+select * from sales_sales_activity_item where CREATE_TIME BETWEEN '2017-01-02 00:00:00' and '2017-01-06 00:00:00' order by id desc limit 0, 10;
+
+
+select count(*) from sales_sales_order where CREATE_TIME BETWEEN '2017-01-02 00:00:00' and '2017-01-06 00:00:00';
+select count(*) from sales_sales_order_item where CREATE_TIME BETWEEN '2017-01-02 00:00:00' and '2017-01-06 00:00:00';
+select * from sales_sales_activity_item where CREATE_TIME BETWEEN '2017-01-02 00:00:00' and '2017-01-06 00:00:00' order by id desc limit 0, 10;
+
+update sales_sales_activity_item set SECONDS_KILL_COUNT = 100000 where id = 1;
+
+
+select * from goods_goods limit 0, 20;
 
 
 
