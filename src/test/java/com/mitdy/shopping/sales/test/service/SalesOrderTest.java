@@ -1,14 +1,11 @@
 package com.mitdy.shopping.sales.test.service;
 
-import java.io.IOException;
-
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mitdy.core.json.JacksonObjectMapper;
 import com.mitdy.shopping.sales.dto.CreateActivityOrderDTO;
+import com.mitdy.shopping.sales.service.SalesActivityService;
 import com.mitdy.shopping.sales.service.SalesOrderService;
 import com.mitdy.shopping.test.base.BaseTest;
 
@@ -16,6 +13,9 @@ public class SalesOrderTest extends BaseTest {
     
     @Autowired
     private SalesOrderService salesOrderService;
+    
+    @Autowired
+    private SalesActivityService salesActivityService;
     
     @Test
     public void createActivityOrderTest() throws Exception {
@@ -34,6 +34,12 @@ public class SalesOrderTest extends BaseTest {
         
 //        salesOrderService.createActivityOrder(orderDTO);
         
+    }
+    
+    @Test
+    public void updateTest() {
+        int count = salesActivityService.increaseActivityItemSellCount(1L, 1);
+        System.out.println("count: " + count);
     }
 
 }
