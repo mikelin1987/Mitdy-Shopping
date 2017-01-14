@@ -11,7 +11,6 @@ import java.util.Date;
 
 import javax.sql.DataSource;
 
-import org.jasypt.encryption.BigDecimalEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +25,7 @@ import com.mitdy.shopping.sales.domain.SalesOrder;
 import com.mitdy.shopping.sales.domain.SalesOrderItem;
 import com.mitdy.shopping.sales.dto.CreateActivityOrderDTO;
 import com.mitdy.shopping.sales.enumeration.SalesOrderStatus;
+import com.mitdy.shopping.sales.mapper.SalesActivityItemMapper;
 import com.mitdy.shopping.sales.persistence.SalesActivityItemDao;
 import com.mitdy.shopping.sales.persistence.SalesOrderDao;
 import com.mitdy.shopping.sales.persistence.SalesOrderItemDao;
@@ -50,6 +50,9 @@ public class SalesOrderServiceImpl implements SalesOrderService {
 
     @Autowired
     private SalesActivityService salesActivityService;
+    
+    @Autowired
+    private SalesActivityItemMapper salesActivityItemMapper;
 
     @Autowired
     private DataSource dataSource;
@@ -57,7 +60,7 @@ public class SalesOrderServiceImpl implements SalesOrderService {
     private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 
     @Override
-    public void createActivityOrder(CreateActivityOrderDTO orderDTO) {
+    public void createActivityOrderByHibernate(CreateActivityOrderDTO orderDTO) {
 
         if (orderDTO.getQuantity() < 0) {
             throw new IllegalArgumentException("Invalid quantity of value '0'");
@@ -310,6 +313,19 @@ public class SalesOrderServiceImpl implements SalesOrderService {
             rs = null;
             throw new IllegalStateException("The goods is sell out!");
         }
+        
+    }
+
+    @Override
+    public void createActivityOrderByMyBatis(CreateActivityOrderDTO orderDTO) {
+        if (orderDTO.getQuantity() < 0) {
+            throw new IllegalArgumentException("Invalid quantity of value '0'");
+        }
+        
+        int updateCount = salesActivityItemMapper.increaseSellCount(orderDTO.getActivityItemId(), orderDTO.getQuantity());
+        
+        
+        
         
     }
 

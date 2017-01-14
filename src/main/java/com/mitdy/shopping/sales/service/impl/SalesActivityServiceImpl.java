@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mitdy.shopping.sales.domain.SalesActivityItem;
+import com.mitdy.shopping.sales.mapper.SalesActivityItemMapper;
 import com.mitdy.shopping.sales.persistence.SalesActivityItemDao;
 import com.mitdy.shopping.sales.service.SalesActivityService;
 
@@ -14,6 +15,9 @@ public class SalesActivityServiceImpl implements SalesActivityService {
 
     @Autowired
     private SalesActivityItemDao salesActivityItemDao;
+    
+    @Autowired
+    private SalesActivityItemMapper salesActivityItemMapper;
     
     @Override
     public SalesActivityItem saveSalesActivityItem(SalesActivityItem item) {
@@ -28,7 +32,9 @@ public class SalesActivityServiceImpl implements SalesActivityService {
 
     @Override
     public int increaseActivityItemSellCount(Long itemId, int count) {
-        return salesActivityItemDao.increaseSellCount(itemId, count);
+//        return salesActivityItemDao.increaseSellCount(itemId, count);
+        
+        return salesActivityItemMapper.increaseSellCount(itemId, count);
     }
     
     

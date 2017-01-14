@@ -22,7 +22,7 @@ public class SalesOrderServletController {
     @ResponseBody
     public ResponseData<Boolean> createActivityOrder(@RequestBody CreateActivityOrderDTO orderDTO) {
         try {
-            salesOrderService.createActivityOrder(orderDTO);
+            salesOrderService.createActivityOrderByHibernate(orderDTO);
             return new ResponseData<Boolean>(true);
         } catch (Exception e) {
             System.out.println(e.getMessage());
