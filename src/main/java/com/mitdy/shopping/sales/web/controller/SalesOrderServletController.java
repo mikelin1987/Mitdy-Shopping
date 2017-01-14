@@ -31,6 +31,19 @@ public class SalesOrderServletController {
         }
     }
     
+    @RequestMapping(method = RequestMethod.POST, value = "/createActivityOrderByNativeSQL")
+    @ResponseBody
+    public ResponseData<Boolean> createActivityOrderByNativeSQL(@RequestBody CreateActivityOrderDTO orderDTO) {
+        try {
+            salesOrderService.createActivityOrderByNativeSQL(orderDTO);
+            return new ResponseData<Boolean>(true);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+//            return new ResponseData<Boolean>("Exception", e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+    
     @RequestMapping(method = RequestMethod.POST, value = "/createDummyActivityOrder")
     @ResponseBody
     public ResponseData<Boolean> createDummyActivityOrder(@RequestBody CreateActivityOrderDTO orderDTO) {

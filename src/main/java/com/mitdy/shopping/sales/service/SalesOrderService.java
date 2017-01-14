@@ -6,4 +6,6 @@ public interface SalesOrderService {
 
 	public void createActivityOrder(CreateActivityOrderDTO orderDTO);
 	
+	public void createActivityOrderByNativeSQL(CreateActivityOrderDTO orderDTO) throws Exception ;
+	
 }
