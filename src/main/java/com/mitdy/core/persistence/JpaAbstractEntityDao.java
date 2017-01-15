@@ -14,7 +14,7 @@ import javax.persistence.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mitdy.core.domain.AbstractEntity;
-import com.mitdy.core.value.CommonCriteria;
+import com.mitdy.core.dto.QueryDTO;
 
 /**
  * 操作数据库的抽象接口的直接实现，使用JPA技术
@@ -273,7 +273,7 @@ public class JpaAbstractEntityDao<T extends AbstractEntity> implements AbstractE
 
     @SuppressWarnings("unchecked")
 	@Override
-    public List<T> findByCriteria(CommonCriteria _criteria) {
+    public List<T> findByCriteria(QueryDTO _criteria) {
         StringBuffer querySql = new StringBuffer("select e from ").append(entityType.getSimpleName()).append(" e ");
 
         Query query = appendQuery(_criteria, querySql);
@@ -282,7 +282,7 @@ public class JpaAbstractEntityDao<T extends AbstractEntity> implements AbstractE
     }
 
 	@Override
-    public Long getCountByCriteria(CommonCriteria _criteria) {
+    public Long getCountByCriteria(QueryDTO _criteria) {
     	StringBuffer querySql = new StringBuffer("select count(*) from ").append(entityType.getSimpleName()).append(" e ");
 
         Query query = appendQuery(_criteria, querySql);
@@ -290,7 +290,7 @@ public class JpaAbstractEntityDao<T extends AbstractEntity> implements AbstractE
         return (Long) query.getSingleResult();
     }
 	
-	protected Query appendQuery(CommonCriteria _criteria, StringBuffer querySql) {
+	protected Query appendQuery(QueryDTO _criteria, StringBuffer querySql) {
 		setParamNames(_criteria, querySql);
 		
 //		querySql.append(" order by e.id desc ");
@@ -302,10 +302,10 @@ public class JpaAbstractEntityDao<T extends AbstractEntity> implements AbstractE
 		return query;
 	}
 
-	protected void setParamNames(CommonCriteria _criteria, StringBuffer querySql) {
+	protected void setParamNames(QueryDTO _criteria, StringBuffer querySql) {
 	}
 	
-	protected void setParamValues(Query query, CommonCriteria _criteria, StringBuffer querySql) {
+	protected void setParamValues(Query query, QueryDTO _criteria, StringBuffer querySql) {
 	}
 
 }

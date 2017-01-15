@@ -5,7 +5,9 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 <configuration>
         <!-- 命名空间 -->
     <typeAliases>
-        
+        <typeAlias alias="GoodsInfoDTO" type="com.mitdy.shopping.sales.dto.GoodsInfoDTO" />
+        <typeAlias alias="SalesOrderDTO" type="com.mitdy.shopping.sales.dto.SalesOrderDTO" />
+        <typeAlias alias="SalesOrderItemDTO" type="com.mitdy.shopping.sales.dto.SalesOrderItemDTO" />
     </typeAliases>
 
     <!-- 映射map -->

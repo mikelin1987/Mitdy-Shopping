@@ -61,12 +61,18 @@ public class UserTest extends BaseTest {
     }
     
     @Test
-    public void findUserByUsernameTest2() {
+    public void findUserByUsernameUsingCacheTest1() {
+        User user = userService.findUserByUsername("user002");
+        System.out.println(user);
+    }
+    
+    @Test
+    public void findUserByUsernameUsingCacheTest2() {
         Date time1 = new Date();
         System.out.println("time1: " + SIMPLE_DATE_FORMAT.format(time1));
         
         for (int i = 0; i < 100; i++) {
-            User user = userService.findUserByUsername("user2");
+            User user = userService.findUserByUsername("user002");
             System.out.println(i + ", " + user);
         }
         

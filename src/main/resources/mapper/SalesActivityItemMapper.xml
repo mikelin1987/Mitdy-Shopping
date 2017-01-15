@@ -1,124 +1,86 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.mitdy.shopping.sales.mapper.SalesActivityItemMapper" >
-  
-  <sql id="Base_Column_List" >
-    ID, USERNAME, NICKNAME, PASSWORD, CREATE_TIME, CREATE_USER, STATUS
-  </sql>
-  
-  <update id="increaseSellCount">
+<mapper namespace="com.mitdy.shopping.sales.mapper.SalesActivityItemMapper">
+
+	<sql id="Base_Column_List">
+		ID, USERNAME, NICKNAME, PASSWORD, CREATE_TIME, CREATE_USER,
+		STATUS
+	</sql>
+
+	<update id="increaseSellCount">
   	<![CDATA[
-  		update sales_sales_activity_item set sell_count = sell_count + #{1} where id = #{0} and sell_count + #{1} <= seconds_kill_count
-  	]]>	
-  </update>
-  
-  
-  <select id="selectByPrimaryKey" resultType="hashMap" parameterType="java.lang.Long" >
-    select 
-    <include refid="Base_Column_List" />
-    from demo_user
-    	where ID = #{id,jdbcType=BIGINT}
-  </select>
-  
-  
-  <!-- <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from demo_user
-    where ID = #{id,jdbcType=BIGINT}
-  </delete>
-  
-  <insert id="insert" parameterType="com.company.projectname.domain.User" >
-    insert into demo_user (ID, USERNAME, NICKNAME, 
-      PASSWORD, CREATE_TIME, CREATE_USER, 
-      STATUS)
-    values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
-      #{password,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, 
-      #{status,jdbcType=VARCHAR})
-  </insert>
-  
-  <insert id="insertSelective" >
-    insert into demo_user
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        ID,
-      </if>
-      <if test="username != null" >
-        USERNAME,
-      </if>
-      <if test="nickname != null" >
-        NICKNAME,
-      </if>
-      <if test="password != null" >
-        PASSWORD,
-      </if>
-      <if test="createTime != null" >
-        CREATE_TIME,
-      </if>
-      <if test="createUser != null" >
-        CREATE_USER,
-      </if>
-      <if test="status != null" >
-        STATUS,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="username != null" >
-        #{username,jdbcType=VARCHAR},
-      </if>
-      <if test="nickname != null" >
-        #{nickname,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null" >
-        #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createUser != null" >
-        #{createUser,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null" >
-        #{status,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  
-  <update id="updateByPrimaryKeySelective" >
-    update demo_user
-    <set >
-      <if test="username != null" >
-        USERNAME = #{username,jdbcType=VARCHAR},
-      </if>
-      <if test="nickname != null" >
-        NICKNAME = #{nickname,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null" >
-        PASSWORD = #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null" >
-        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createUser != null" >
-        CREATE_USER = #{createUser,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null" >
-        STATUS = #{status,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where ID = #{id,jdbcType=BIGINT}
-  </update>
-  
-  <update id="updateByPrimaryKey" >
-    update demo_user
-    set USERNAME = #{username,jdbcType=VARCHAR},
-      NICKNAME = #{nickname,jdbcType=VARCHAR},
-      PASSWORD = #{password,jdbcType=VARCHAR},
-      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
-      CREATE_USER = #{createUser,jdbcType=VARCHAR},
-      STATUS = #{status,jdbcType=VARCHAR}
-    where ID = #{id,jdbcType=BIGINT}
-  </update> -->
-  
+  	
+  		update SALES_SALES_ACTIVITY_ITEM
+		set sell_count = sell_count + #{1} where id = #{0} and sell_count + #{1} <= seconds_kill_count
+  		
+  	]]>
+	</update>
+
+	<select id="findGoodsInfoMapByItemId" resultType="GoodsInfoDTO"
+		parameterType="java.lang.Long">
+		<![CDATA[
+		
+			SELECT
+				g.id as goodsId,
+				g.goods_name as goodsName,
+				g.goods_desc as goodsDesc,
+				gp.unit_price as goodsUnitPrice,
+				ai.discount_percentage as discountPercentage
+			FROM
+				sales_sales_activity_item ai
+			LEFT OUTER JOIN sales_goods_pricing gp ON gp.id = ai.goods_pricing_id
+			LEFT OUTER JOIN goods_goods g ON g.id = gp.goods_id
+			WHERE
+				ai.id = #{itemId}
+			
+		    ]]>
+	</select>
+
+
+	<select id="findGoodsInfoMapByItemId2" resultType="map"
+		parameterType="java.lang.Long">
+		<![CDATA[
+		
+			SELECT
+				ai.*
+			FROM
+				sales_sales_activity_item ai 
+			WHERE
+				ai.id = #{itemId}
+			
+		    ]]>
+	</select>
+
+
+	<!-- <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" > delete 
+		from demo_user where ID = #{id,jdbcType=BIGINT} </delete> <insert id="insert" 
+		parameterType="com.company.projectname.domain.User" > insert into demo_user 
+		(ID, USERNAME, NICKNAME, PASSWORD, CREATE_TIME, CREATE_USER, STATUS) values 
+		(#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
+		#{password,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, 
+		#{status,jdbcType=VARCHAR}) </insert> <insert id="insertSelective" > insert 
+		into demo_user <trim prefix="(" suffix=")" suffixOverrides="," > <if test="id 
+		!= null" > ID, </if> <if test="username != null" > USERNAME, </if> <if test="nickname 
+		!= null" > NICKNAME, </if> <if test="password != null" > PASSWORD, </if> 
+		<if test="createTime != null" > CREATE_TIME, </if> <if test="createUser != 
+		null" > CREATE_USER, </if> <if test="status != null" > STATUS, </if> </trim> 
+		<trim prefix="values (" suffix=")" suffixOverrides="," > <if test="id != 
+		null" > #{id,jdbcType=BIGINT}, </if> <if test="username != null" > #{username,jdbcType=VARCHAR}, 
+		</if> <if test="nickname != null" > #{nickname,jdbcType=VARCHAR}, </if> <if 
+		test="password != null" > #{password,jdbcType=VARCHAR}, </if> <if test="createTime 
+		!= null" > #{createTime,jdbcType=TIMESTAMP}, </if> <if test="createUser != 
+		null" > #{createUser,jdbcType=VARCHAR}, </if> <if test="status != null" > 
+		#{status,jdbcType=VARCHAR}, </if> </trim> </insert> <update id="updateByPrimaryKeySelective" 
+		> update demo_user <set > <if test="username != null" > USERNAME = #{username,jdbcType=VARCHAR}, 
+		</if> <if test="nickname != null" > NICKNAME = #{nickname,jdbcType=VARCHAR}, 
+		</if> <if test="password != null" > PASSWORD = #{password,jdbcType=VARCHAR}, 
+		</if> <if test="createTime != null" > CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}, 
+		</if> <if test="createUser != null" > CREATE_USER = #{createUser,jdbcType=VARCHAR}, 
+		</if> <if test="status != null" > STATUS = #{status,jdbcType=VARCHAR}, </if> 
+		</set> where ID = #{id,jdbcType=BIGINT} </update> <update id="updateByPrimaryKey" 
+		> update demo_user set USERNAME = #{username,jdbcType=VARCHAR}, NICKNAME 
+		= #{nickname,jdbcType=VARCHAR}, PASSWORD = #{password,jdbcType=VARCHAR}, 
+		CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}, CREATE_USER = #{createUser,jdbcType=VARCHAR}, 
+		STATUS = #{status,jdbcType=VARCHAR} where ID = #{id,jdbcType=BIGINT} </update> -->
+
 </mapper>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mitdy.shopping.sales.mapper.SalesOrderMapper">
+
+	<insert id="insertSalesOrder" parameterType="SalesOrderDTO"
+		useGeneratedKeys="true" keyProperty="id">
+		<![CDATA[
+		
+			insert into SALES_SALES_ORDER (
+				ORDER_NO,
+				MEMBER_ID,
+				PAYER_NAME,
+				CONTACT_NO,
+				PAYMENT_TYPE,
+				ORDER_STATUS,
+				ORDER_AMOUNT,
+				DELIVER_AMOUNT,
+				DISCOUNT_AMOUNT,
+				ACTUAL_AMOUNT,
+				SUBMIT_TIME,
+				CREATE_TIME,
+				CREATE_USER,
+				LAST_UPDATE_TIME,
+				LAST_UPDATE_USER
+			)
+			values
+			(
+				#{orderNo},
+				#{memberId},
+				#{payerName},
+				#{contactNo},
+				#{paymentType},
+				#{orderStatus},
+				#{orderAmount},
+				#{deliverAmount},
+				#{discountAmount},
+				#{actualAmount},
+				#{submitTime},
+				#{createTime},
+				#{createUser},
+				#{lastUpdateTime},
+				#{lastUpdateUser}
+			)
+		
+		]]>
+	</insert>
+
+	<insert id="insertSalesOrderItem" parameterType="SalesOrderItemDTO"
+		useGeneratedKeys="true" keyProperty="id">
+		<![CDATA[
+		
+			insert into SALES_SALES_ORDER_ITEM (
+				ORDER_ID,
+				SALES_ACTIVITY_ITEM_ID,
+				GOODS_ID,
+				GOODS_NAME,
+				GOODS_DESC,
+				UNIT_PRICE,
+				ACTUAL_UNIT_PRICE,
+				QUANTITY,
+				TOTAL_AMOUNT,
+				CREATE_TIME,
+				CREATE_USER,
+				LAST_UPDATE_TIME,
+				LAST_UPDATE_USER
+			)
+			values
+			(
+				#{orderId},
+				#{salesActivityItemId},
+				#{goodsId},
+				#{goodsName},
+				#{goodsDesc},
+				#{unitPrice},
+				#{actualUnitPrice},
+				#{quantity},
+				#{totalAmount},
+				#{createTime},
+				#{createUser},
+				#{lastUpdateTime},
+				#{lastUpdateUser}
+			)
+		
+		]]>
+	</insert>
+
+
+</mapper>

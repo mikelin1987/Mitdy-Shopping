@@ -3,7 +3,9 @@ package com.mitdy.core.dto;
 import java.io.Serializable;
 import java.util.Date;
 
-public class UpdateDTO implements Serializable {
+import com.mitdy.core.domain.Auditable;
+
+public class UpdateDTO implements Serializable, Auditable { 
 
     private static final long serialVersionUID = 8680375317341298514L;
 

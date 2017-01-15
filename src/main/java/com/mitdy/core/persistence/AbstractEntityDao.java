@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.mitdy.core.domain.AbstractEntity;
-import com.mitdy.core.value.CommonCriteria;
+import com.mitdy.core.dto.QueryDTO;
 
 /**
  * 操作数据库的抽象接口
@@ -129,9 +129,9 @@ public interface AbstractEntityDao<Entity extends AbstractEntity> {
 	
 	public List<Entity> findByIds(List<Long> ids);
 	
-	public List<Entity> findByCriteria(CommonCriteria _criteria);
+	public List<Entity> findByCriteria(QueryDTO _criteria);
 	
-	public Long getCountByCriteria(CommonCriteria _criteria);
+	public Long getCountByCriteria(QueryDTO _criteria);
 	
 	/**
 	 * 根据查询语句和参数查找一个实体

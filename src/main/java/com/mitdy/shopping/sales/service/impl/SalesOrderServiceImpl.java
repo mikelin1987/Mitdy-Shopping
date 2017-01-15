@@ -17,16 +17,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mitdy.core.domain.Auditer;
 import com.mitdy.core.util.StringHelper;
-import com.mitdy.shopping.member.domain.Member;
-import com.mitdy.shopping.member.persistence.MemberDao;
+import com.mitdy.shopping.member.service.MemberService;
 import com.mitdy.shopping.sales.domain.GoodsPricing;
 import com.mitdy.shopping.sales.domain.SalesActivityItem;
 import com.mitdy.shopping.sales.domain.SalesOrder;
 import com.mitdy.shopping.sales.domain.SalesOrderItem;
 import com.mitdy.shopping.sales.dto.CreateActivityOrderDTO;
+import com.mitdy.shopping.sales.dto.GoodsInfoDTO;
+import com.mitdy.shopping.sales.dto.SalesOrderDTO;
+import com.mitdy.shopping.sales.dto.SalesOrderItemDTO;
 import com.mitdy.shopping.sales.enumeration.SalesOrderStatus;
-import com.mitdy.shopping.sales.mapper.SalesActivityItemMapper;
-import com.mitdy.shopping.sales.persistence.SalesActivityItemDao;
+import com.mitdy.shopping.sales.mapper.SalesOrderMapper;
 import com.mitdy.shopping.sales.persistence.SalesOrderDao;
 import com.mitdy.shopping.sales.persistence.SalesOrderItemDao;
 import com.mitdy.shopping.sales.service.SalesActivityService;
@@ -40,10 +41,7 @@ public class SalesOrderServiceImpl implements SalesOrderService {
     private SalesOrderDao salesOrderDao;
 
     @Autowired
-    private SalesActivityItemDao salesActivityItemDao;
-
-    @Autowired
-    private MemberDao memberDao;
+    private MemberService memberService;
 
     @Autowired
     private SalesOrderItemDao salesOrderItemDao;
@@ -52,7 +50,7 @@ public class SalesOrderServiceImpl implements SalesOrderService {
     private SalesActivityService salesActivityService;
     
     @Autowired
-    private SalesActivityItemMapper salesActivityItemMapper;
+    private SalesOrderMapper salesOrderMapper;
 
     @Autowired
     private DataSource dataSource;
@@ -66,8 +64,8 @@ public class SalesOrderServiceImpl implements SalesOrderService {
             throw new IllegalArgumentException("Invalid quantity of value '0'");
         }
 
-        Member member = memberDao.findById(orderDTO.getMemberId());
-        if (member == null) {
+        long memberCount = memberService.getCountById(orderDTO.getMemberId());
+        if (memberCount == 0) {
             throw new IllegalArgumentException("Could not find the member with id'" + orderDTO.getMemberId() + "'");
         }
 
@@ -322,9 +320,80 @@ public class SalesOrderServiceImpl implements SalesOrderService {
             throw new IllegalArgumentException("Invalid quantity of value '0'");
         }
         
-        int updateCount = salesActivityItemMapper.increaseSellCount(orderDTO.getActivityItemId(), orderDTO.getQuantity());
+        long memberCount = memberService.getCountById(orderDTO.getMemberId());
+        if (memberCount == 0) {
+            throw new IllegalArgumentException("Could not find the member with id'" + orderDTO.getMemberId() + "'");
+        }
         
+        System.out.println("before update item, " +Thread.currentThread().getName());
         
+        int updateCount = salesActivityService.increaseActivityItemSellCount(orderDTO.getActivityItemId(), orderDTO.getQuantity());
+        
+        if (updateCount > 0) {
+            
+            // get goods info
+            GoodsInfoDTO goodsInfo = salesActivityService.findGoodsInfoMapByItemId(orderDTO.getActivityItemId());
+//            Long goodsId = (Long) goodsInfo.get("GOODS_ID");
+//            String goodsName = (String) goodsInfo.get("GOOD_NAME");
+//            String goodsDesc = (String) goodsInfo.get("GOODS_DESC");
+//            BigDecimal goodsUnitPrice = (BigDecimal) goodsInfo.get("GOODS_UNIT_PRICE");
+//            BigDecimal discountPercentage = (BigDecimal) goodsInfo.get("DISCOUNT_PERCENTAGE");
+            
+            Long goodsId = goodsInfo.getGoodsId();
+            String goodsName = goodsInfo.getGoodsName();
+            String goodsDesc = goodsInfo.getGoodsDesc();
+            BigDecimal goodsUnitPrice = goodsInfo.getGoodsUnitPrice();
+            BigDecimal discountPercentage = goodsInfo.getDiscountPercentage();
+
+            String orderNo = formatter.format(new Date()) + StringHelper.getRandomString(4);
+            
+            BigDecimal orderAmount = goodsUnitPrice.multiply(discountPercentage).multiply(new BigDecimal(orderDTO.getQuantity())).setScale(2, RoundingMode.HALF_UP);
+            BigDecimal deliverAmount = new BigDecimal(0);
+            java.sql.Date createTime = new java.sql.Date(System.currentTimeMillis());
+            
+            // create sales order
+            SalesOrderDTO order = new SalesOrderDTO();
+            order.setOrderNo(orderNo);
+            order.setMemberId(orderDTO.getMemberId());
+            order.setPayerName(orderDTO.getPayerName());
+            order.setContactNo(orderDTO.getContactNo());
+            order.setPaymentType(orderDTO.getPaymentType());
+            order.setOrderStatus(SalesOrderStatus.PENDING);
+            order.setDeliverAmount(deliverAmount);
+            order.setOrderAmount(orderAmount);
+            order.setDiscountAmount(new BigDecimal(0.0));
+            order.setActualAmount(order.getOrderAmount().add(order.getDeliverAmount()).setScale(2, RoundingMode.HALF_UP));
+            order.setSubmitTime(createTime);
+            Auditer.audit(order, null);
+            salesOrderMapper.insertSalesOrder(order);
+            
+            
+            BigDecimal actualUnitPrice = goodsUnitPrice.multiply(discountPercentage.setScale(2, RoundingMode.HALF_UP));
+            BigDecimal quantity = new BigDecimal(orderDTO.getQuantity());
+            BigDecimal totalAmount = actualUnitPrice.multiply(quantity).setScale(2, RoundingMode.HALF_UP);
+            
+            // create sales order item
+            SalesOrderItemDTO orderItem = new SalesOrderItemDTO();
+            orderItem.setOrderId(order.getId());
+            orderItem.setSalesActivityItemId(orderDTO.getActivityItemId());
+            orderItem.setGoodsId(goodsId);
+            orderItem.setGoodsName(goodsName);
+            orderItem.setGoodsDesc(goodsDesc);
+            orderItem.setUnitPrice(goodsUnitPrice);
+            orderItem.setActualUnitPrice(actualUnitPrice);
+            orderItem.setQuantity(quantity);
+            orderItem.setTotalAmount(totalAmount);
+            Auditer.audit(orderItem, null);
+            salesOrderMapper.insertSalesOrderItem(orderItem);
+            
+            System.out.println(
+                    "after update by " +Thread.currentThread().getName());
+            
+        } else {
+            System.out.println("after update item occurred exception, " +Thread.currentThread().getName());
+
+            throw new IllegalStateException("The goods is sell out!");
+        }
         
         
     }
