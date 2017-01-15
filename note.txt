@@ -1,0 +1,13 @@
+
+
+=====================Redis=====================
+---Windows---
+redis-server.exe
+
+
+=====================Memcached=====================
+---Windows---
+memcached.exe -d start 
+
+
+
