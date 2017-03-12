@@ -48,7 +48,7 @@ public class SalesOrderServiceImpl implements SalesOrderService {
 
     @Autowired
     private SalesActivityService salesActivityService;
-    
+
     @Autowired
     private SalesOrderMapper salesOrderMapper;
 
@@ -96,15 +96,14 @@ public class SalesOrderServiceImpl implements SalesOrderService {
         // orderDTO.getQuantity() + "'");
         // }
 
-        System.out.println("before update item, " +Thread.currentThread().getName());
+        System.out.println("before update item, " + Thread.currentThread().getName());
 
         int updateCount = salesActivityService.increaseActivityItemSellCount(orderDTO.getActivityItemId(), orderDTO.getQuantity());
         if (updateCount > 0) {
 
             SalesActivityItem salesActivityItem = salesActivityService.findSalesActivityItemById(orderDTO.getActivityItemId());
 
-            System.out.println(
-                    "after update item, " +Thread.currentThread().getName() + ", salesActivityItem: " + salesActivityItem.getSellCount());
+            System.out.println("after update item, " + Thread.currentThread().getName() + ", salesActivityItem: " + salesActivityItem.getSellCount());
 
             GoodsPricing goodsPricing = salesActivityItem.getGoodsPricing();
 
@@ -137,7 +136,7 @@ public class SalesOrderServiceImpl implements SalesOrderService {
 
             salesOrderItemDao.save(orderItem);
         } else {
-            System.out.println("after update item occurred exception, " +Thread.currentThread().getName());
+            System.out.println("after update item occurred exception, " + Thread.currentThread().getName());
 
             throw new IllegalStateException("The goods is sell out!");
         }
@@ -152,7 +151,7 @@ public class SalesOrderServiceImpl implements SalesOrderService {
         }
 
         Connection conn = dataSource.getConnection();
-        
+
         conn.setAutoCommit(false);
         PreparedStatement preStmt = conn.prepareStatement("select count(id) from member_member where id = ?");
         preStmt.setLong(1, orderDTO.getMemberId());
@@ -166,7 +165,7 @@ public class SalesOrderServiceImpl implements SalesOrderService {
             }
         }
 
-        System.out.println("before update item, " +Thread.currentThread().getName() + ", conn: " + conn);
+        System.out.println("before update item, " + Thread.currentThread().getName() + ", conn: " + conn);
 
         preStmt = conn.prepareStatement("update sales_sales_activity_item set sell_count = sell_count + ? where id = ? and sell_count + ? <= seconds_kill_count");
         preStmt.setInt(1, orderDTO.getQuantity());
@@ -253,65 +252,65 @@ public class SalesOrderServiceImpl implements SalesOrderService {
 
                 }
                 System.out.println(Thread.currentThread().getName() + ", shouldCommit: " + shouldCommit);
-                
+
                 if (shouldCommit) {
                     System.out.println("commit ");
-                    
+
                     conn.commit();
-                    
+
                     conn.close();
-                    conn = null; 
-                    
+                    conn = null;
+
                     preStmt.close();
                     preStmt = null;
-                    
+
                     rs.close();
                     rs = null;
-                            
+
                 } else {
                     System.out.println("rollback ");
                     conn.rollback();
-                    
+
                     conn.close();
-                    conn = null; 
-                    
+                    conn = null;
+
                     preStmt.close();
                     preStmt = null;
-                    
+
                     rs.close();
                     rs = null;
-                } 
+                }
             } catch (Exception e) {
                 System.out.println(Thread.currentThread().getName() + ", e: " + e);
-                
+
                 conn.rollback();
-                
+
                 conn.close();
-                conn = null; 
-                
+                conn = null;
+
                 preStmt.close();
                 preStmt = null;
-                
+
                 rs.close();
                 rs = null;
                 throw new IllegalStateException(e);
             }
 
         } else {
-            System.out.println("sell out " +Thread.currentThread().getName());
+            System.out.println("sell out " + Thread.currentThread().getName());
             conn.commit();
-            
+
             conn.close();
-            conn = null; 
-            
+            conn = null;
+
             preStmt.close();
             preStmt = null;
-            
+
             rs.close();
             rs = null;
             throw new IllegalStateException("The goods is sell out!");
         }
-        
+
     }
 
     @Override
@@ -319,26 +318,21 @@ public class SalesOrderServiceImpl implements SalesOrderService {
         if (orderDTO.getQuantity() < 0) {
             throw new IllegalArgumentException("Invalid quantity of value '0'");
         }
-        
+
         long memberCount = memberService.getCountById(orderDTO.getMemberId());
         if (memberCount == 0) {
             throw new IllegalArgumentException("Could not find the member with id'" + orderDTO.getMemberId() + "'");
         }
-        
-        System.out.println("before update item, " +Thread.currentThread().getName());
-        
+
+        System.out.println("before update item, " + Thread.currentThread().getName());
+
         int updateCount = salesActivityService.increaseActivityItemSellCount(orderDTO.getActivityItemId(), orderDTO.getQuantity());
-        
+
         if (updateCount > 0) {
-            
+
             // get goods info
             GoodsInfoDTO goodsInfo = salesActivityService.findGoodsInfoMapByItemId(orderDTO.getActivityItemId());
-//            Long goodsId = (Long) goodsInfo.get("GOODS_ID");
-//            String goodsName = (String) goodsInfo.get("GOOD_NAME");
-//            String goodsDesc = (String) goodsInfo.get("GOODS_DESC");
-//            BigDecimal goodsUnitPrice = (BigDecimal) goodsInfo.get("GOODS_UNIT_PRICE");
-//            BigDecimal discountPercentage = (BigDecimal) goodsInfo.get("DISCOUNT_PERCENTAGE");
-            
+
             Long goodsId = goodsInfo.getGoodsId();
             String goodsName = goodsInfo.getGoodsName();
             String goodsDesc = goodsInfo.getGoodsDesc();
@@ -346,11 +340,11 @@ public class SalesOrderServiceImpl implements SalesOrderService {
             BigDecimal discountPercentage = goodsInfo.getDiscountPercentage();
 
             String orderNo = formatter.format(new Date()) + StringHelper.getRandomString(4);
-            
+
             BigDecimal orderAmount = goodsUnitPrice.multiply(discountPercentage).multiply(new BigDecimal(orderDTO.getQuantity())).setScale(2, RoundingMode.HALF_UP);
             BigDecimal deliverAmount = new BigDecimal(0);
             java.sql.Date createTime = new java.sql.Date(System.currentTimeMillis());
-            
+
             // create sales order
             SalesOrderDTO order = new SalesOrderDTO();
             order.setOrderNo(orderNo);
@@ -366,12 +360,11 @@ public class SalesOrderServiceImpl implements SalesOrderService {
             order.setSubmitTime(createTime);
             Auditer.audit(order, null);
             salesOrderMapper.insertSalesOrder(order);
-            
-            
+
             BigDecimal actualUnitPrice = goodsUnitPrice.multiply(discountPercentage.setScale(2, RoundingMode.HALF_UP));
             BigDecimal quantity = new BigDecimal(orderDTO.getQuantity());
             BigDecimal totalAmount = actualUnitPrice.multiply(quantity).setScale(2, RoundingMode.HALF_UP);
-            
+
             // create sales order item
             SalesOrderItemDTO orderItem = new SalesOrderItemDTO();
             orderItem.setOrderId(order.getId());
@@ -385,17 +378,15 @@ public class SalesOrderServiceImpl implements SalesOrderService {
             orderItem.setTotalAmount(totalAmount);
             Auditer.audit(orderItem, null);
             salesOrderMapper.insertSalesOrderItem(orderItem);
-            
-            System.out.println(
-                    "after update by " +Thread.currentThread().getName());
-            
+
+            System.out.println("after update by " + Thread.currentThread().getName());
+
         } else {
-            System.out.println("after update item occurred exception, " +Thread.currentThread().getName());
+            System.out.println("after update item occurred exception, " + Thread.currentThread().getName());
 
             throw new IllegalStateException("The goods is sell out!");
         }
-        
-        
+
     }
 
 }
