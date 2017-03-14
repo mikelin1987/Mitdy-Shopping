@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mitdy.core.value.ResponseData;
-import com.mitdy.shopping.sales.service.SerialNumberGenerator;
+import com.mitdy.shopping.sales.service.impl.SerialNumberGenerator;
 
 @Controller
 @RequestMapping("/common")

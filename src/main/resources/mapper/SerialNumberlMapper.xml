@@ -9,7 +9,7 @@
 				generated_serial_number as generatedSerialNumber,
 				serial_number_date as serialNumberDate
 		from common_serial_number 
-			where date(serial_number_date) = date(#{serialNumberDate}) limit 0, 1
+			where date(serial_number_date) = date(#{serialNumberDate}) limit 0, 1 
 	</select>
 
 	<insert id="saveSerialNumber" parameterType="com.mitdy.shopping.sales.dto.SerialNumberDTO">
@@ -27,7 +27,7 @@
 		)
 	</insert>
 
-	<update id="updateSerialNumber" parameterType="com.mitdy.shopping.sales.dto.SerialNumberDTO">
+	<update id="updateSerialNumber" parameterType="com.mitdy.shopping.sales.dto.SerialNumberDTO" >
 		update common_serial_number
 			set generated_serial_number = #{generatedSerialNumber}
 		where date(serial_number_date) = date(#{serialNumberDate})
@@ -37,6 +37,10 @@
 		update common_serial_number
 			set  current_serial_number = current_serial_number + 1 
 		where date(serial_number_date) = date(#{serialNumberDate})
+		
+		<if test="currentSerialNumber != null">
+			and current_serial_number = #{currentSerialNumber}
+		</if>
 	</update>
 
 </mapper>

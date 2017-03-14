@@ -1,5 +1,3 @@
-
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -7,7 +5,7 @@
 	<artifactId>mitdy-shopping</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>springmvc Maven Webapp</name>
+	<name>mitdy-shopping Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
@@ -96,21 +94,21 @@
 			<version>${spring.version}</version>
 		</dependency>
 		<!-- springframe end -->
-		
+
 		<!-- mybatis核心包 -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis</artifactId>
 			<version>${mybatis.version}</version>
 		</dependency>
-		
+
 		<!-- mybatis/spring包 -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis-spring</artifactId>
 			<version>1.2.2</version>
 		</dependency>
-		
+
 		<!-- mysql驱动包 -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -132,9 +130,10 @@
 		<!-- enchace -->
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
-			<artifactId>ehcache-core</artifactId>
-			<version>2.6.6</version>
+			<artifactId>ehcache</artifactId>
+			<version>2.10.3</version>
 		</dependency>
+
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -329,10 +328,9 @@
 			<version>0.1</version>
 		</dependency>
 		<!-- DUBBO END -->
-		
-		
+
 	</dependencies>
-	
+
 	<build>
 		<finalName>Mitdy-Shopping</finalName>
 		<plugins>
@@ -348,8 +346,8 @@
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.6</version>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.1.1</version>
 				<configuration>
 					<useDefaultDelimiters>false</useDefaultDelimiters>
 					<delimiters>

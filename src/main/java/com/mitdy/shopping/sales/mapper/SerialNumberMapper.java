@@ -8,7 +8,7 @@ public interface SerialNumberMapper {
 
     public SerialNumberDTO querySerialNumberByDate(Date date);
     
-    public void saveSerialNumber(SerialNumberDTO serialNumberDTO);
+    public int saveSerialNumber(SerialNumberDTO serialNumberDTO);
     
     public int updateSerialNumber(SerialNumberDTO serialNumberDTO);
     

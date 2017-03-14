@@ -19,7 +19,7 @@
 	<context:component-scan base-package="com.mitdy.**.service" />
 	<context:component-scan base-package="com.mitdy.**.jms" />
 	<context:annotation-config />
-	<cache:annotation-driven />
+	<!-- <cache:annotation-driven /> -->
 
 	<bean
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
